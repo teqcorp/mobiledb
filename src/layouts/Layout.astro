@@ -1,4 +1,7 @@
 ---
+import Navbar from "@components/Navbar.astro";
+import Footer from "@components/Footer.astro";
+
 interface Props {
   title: string;
 }
@@ -9,14 +12,42 @@ const { title } = Astro.props;
 <!doctype html>
 <html lang="en">
   <head>
+    <script is:inline>
+      // ☝️ This script prevent the FART effect.
+      if (localStorage.getItem("theme") === null) {
+        document.documentElement.setAttribute("data-theme", "dark");
+      } else
+        document.documentElement.setAttribute(
+          "data-theme",
+          localStorage.getItem("theme")
+        );
+    </script>
+    <script>
+      import { themeChange } from "theme-change";
+      themeChange();
+    </script>
     <meta charset="UTF-8" />
     <meta name="description" content="A simple mobile devices database" />
     <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="viewport-fit=cover" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>
   <body>
-    <slot />
+    <Navbar />
+    <main class="max-w-7xl mx-auto px-8 min-h-[calc(100vh-10.5rem)]">
+      <slot />
+    </main>
+    <Footer />
   </body>
 </html>
+<style is:global>
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: sans-serif;
+  }
+</style>

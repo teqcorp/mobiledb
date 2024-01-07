@@ -1,0 +1,38 @@
+---
+import { Icon } from "astro-icon/components";
+---
+
+<script is:inline>
+  const theme = document.documentElement.getAttribute("data-theme");
+
+  document
+    .querySelector("[data-toggle-theme]")
+    .addEventListener("click", (e) => {
+      if (theme == "dark") {
+      }
+      console.log(theme);
+    });
+</script>
+<div class="p-2">
+  <div class="navbar bg-base-300 rounded-xl">
+    <div class="flex-1">
+      <a class="btn btn-ghost text-xl">MobileDB</a>
+    </div>
+    <div class="flex-none gap-2">
+      <div class="form-control">
+        <input
+          type="text"
+          placeholder="Search"
+          class="input input-bordered w-24 md:w-auto"
+        />
+      </div>
+      <ul class="menu menu-horizontal px-1 gap-2">
+        <li>
+          <button data-toggle-theme="dark,light"
+            ><Icon name="ic:baseline-dark-mode" /></button
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
