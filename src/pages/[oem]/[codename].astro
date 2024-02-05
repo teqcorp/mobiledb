@@ -1,0 +1,27 @@
+---
+export const prerender = false;
+
+import Layout from "@layouts/Layout.astro";
+import { parse } from "yaml";
+
+const { oem, codename } = Astro.params;
+
+const url = `https://github.com/teqcorp/mobiledb_database/raw/main/devices/${oem}/${codename}.yml`;
+
+const response = await fetch(url);
+const data = parse(await response.text());
+
+console.log(data);
+---
+
+<Layout title=`MobileDB | ${data.manufacturer} ${data.name}`>
+  <div class="flex flex-col gap-4">
+    <div class="text-sm breadcrumbs">
+      <ul>
+        <li><a href={`/${oem}`}>{data.manufacturer}</a></li>
+        <li><a href={`/${oem}/${codename}`}>{data.name}</a></li>
+      </ul>
+    </div>
+    <h2>{data.manufacturer} {data.name}</h2>
+  </div>
+</Layout>

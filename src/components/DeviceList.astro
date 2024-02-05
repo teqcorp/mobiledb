@@ -1,0 +1,46 @@
+---
+export const prerender = false;
+
+import { parse } from "yaml";
+const url =
+  "https://raw.githubusercontent.com/teqcorp/mobiledb_database/main/devices.yml";
+const response = await fetch(url);
+const devices = parse(await response.text());
+
+let isLoaded = false;
+---
+
+<div class="flex flex-col gap-4">
+  <p class="ml-1">Pick a device from the list or search for it above</p>
+  <div
+    class="grid grid-cols-1 grid-rows-3 sm:grid-cols-3 sm:grid-rows-1 gap-4 min-h-4"
+  >
+    {
+      !isLoaded ? (
+        <>
+          <div class="skeleton h-[92px]" />
+          <div class="skeleton" />
+          <div class="skeleton" />
+        </>
+      ) : null
+    }
+    {
+      Object.keys(devices).map((oem) => {
+        Object.keys(oem)
+          .slice(0, 3)
+          .map((device: any) => {
+            const codename = devices[oem][device];
+            isLoaded = true;
+            console.log(oem, codename);
+            return (
+              <a class="card bg-base-200" href={`/devices/${oem}/${codename}`}>
+                <div class="card-body">
+                  <span class="card-title">{codename}</span>
+                </div>
+              </a>
+            );
+          });
+      })
+    }
+  </div>
+</div>
