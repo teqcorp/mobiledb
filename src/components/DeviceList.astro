@@ -2,10 +2,26 @@
 export const prerender = false;
 
 import { parse } from "yaml";
+
 const url =
   "https://raw.githubusercontent.com/teqcorp/mobiledb_database/main/devices.yml";
 const response = await fetch(url);
 const devices = parse(await response.text());
+
+let lastThreeDevices = [];
+let i = 0;
+
+for (const oem in devices) {
+  for (const device in devices[oem]) {
+    lastThreeDevices.push([oem, devices[oem][device]]);
+    i++;
+    if (i == 3) {
+      break;
+    }
+  }
+}
+
+console.log(lastThreeDevices);
 
 let isLoaded = false;
 ---
@@ -16,7 +32,7 @@ let isLoaded = false;
     class="grid grid-cols-1 grid-rows-3 sm:grid-cols-3 sm:grid-rows-1 gap-4 min-h-4"
   >
     {
-      !isLoaded ? (
+      isLoaded ? (
         <>
           <div class="skeleton h-[92px]" />
           <div class="skeleton" />
@@ -25,21 +41,16 @@ let isLoaded = false;
       ) : null
     }
     {
-      Object.keys(devices).map((oem) => {
-        Object.keys(oem)
-          .slice(0, 3)
-          .map((device: any) => {
-            const codename = devices[oem][device];
-            isLoaded = true;
-            console.log(oem, codename);
-            return (
-              <a class="card bg-base-200" href={`/devices/${oem}/${codename}`}>
-                <div class="card-body">
-                  <span class="card-title">{codename}</span>
-                </div>
-              </a>
-            );
-          });
+      lastThreeDevices.map(([oem, device]) => {
+        isLoaded = true;
+        return (
+          <a class="card bg-base-200" href={`/${oem}/${device}`}>
+            <div class="card-body">
+              <span class="card-title">{oem}</span>
+              <span>{device}</span>
+            </div>
+          </a>
+        );
       })
     }
   </div>
