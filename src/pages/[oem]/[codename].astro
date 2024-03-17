@@ -22,6 +22,150 @@ console.log(data);
         <li><a href={`/${oem}/${codename}`}>{data.name}</a></li>
       </ul>
     </div>
-    <h2>{data.manufacturer} {data.name}</h2>
+    <h1 class="text-2xl">{data.manufacturer} {data.name}</h1>
+
+    <div class="flex flex-col gap-4">
+      {data.released ? <span>Released: {data.released}</span> : null}
+      <div class="flex flex-col">
+        <h3>Models:</h3>
+        <ul class="flex flex-col list list-disc list-inside ml-2">
+          {
+            data.models
+              ? data.models.map((model: string) => {
+                  return <li>{model}</li>;
+                })
+              : null
+          }
+        </ul>
+      </div>
+      {data.software ? <span>Software: {data.software}</span> : null}
+      <div class="flex flex-col">
+        <h3>Platform:</h3>
+        <div class="flex flex-col ml-2">
+          {data.platform.soc ? <span>SoC: {data.platform.soc}</span> : null}
+          {data.platform.gpu ? <span>GPU: {data.platform.gpu}</span> : null}
+        </div>
+      </div>
+      <div class="flex flex-col">
+        <h3>Memory:</h3>
+        <div class="flex flex-col ml-2">
+          {data.memory.variants ? <div>variants:</div> : null}
+          <ul class="flex flex-col list list-disc list-inside ml-4">
+            {
+              data.memory.variants
+                ? data.memory.variants.map((variant: string) => {
+                    return <li>{variant}</li>;
+                  })
+                : null
+            }
+          </ul>
+
+          {data.memory.type ? <span>type: {data.memory.type}</span> : null}
+          {
+            data.memory.sdcard != null ? (
+              <span>SDCard: {data.memory.sdcard ? "Yes" : "No"}</span>
+            ) : null
+          }
+        </div>
+      </div>
+      <div class="flex flex-col">
+        <h3>Communication:</h3>
+        <div class="flex flex-col ml-2">
+          {
+            data.communication.radio != null ? (
+              <span>FM radio: {data.communication.radio ? "Yes" : "No"}</span>
+            ) : null
+          }
+          {
+            data.communication.nfc != null ? (
+              <span>NFC: {data.communication.nfc ? "Yes" : "No"}</span>
+            ) : null
+          }
+          {
+            data.communication.ir != null ? (
+              <span>Ir blaster: {data.communication.ir ? "Yes" : "No"}</span>
+            ) : null
+          }
+          <h3>USB:</h3>
+          <div class="flex flex-col ml-2">
+            {
+              data.communication.usb.type ? (
+                <span>type: {data.communication.usb.type}</span>
+              ) : null
+            }
+            {
+              data.communication.usb.otg != null ? (
+                <span>OTG: {data.communication.usb.otg ? "Yes" : "No"}</span>
+              ) : null
+            }
+          </div>
+        </div>
+      </div>
+      {
+        data.fingerprint ? (
+          <span>Fingerprint reader: {data.fingerprint}</span>
+        ) : null
+      }
+      <div class="flex flex-col">
+        <h3>Battery:</h3>
+        <div class="flex flex-col ml-2">
+          {data.battery.type ? <span>type: {data.battery.type}</span> : null}
+          {data.battery.size ? <span>size: {data.battery.size}mAh</span> : null}
+          {
+            data.battery.removable != null ? (
+              <span>removable: {data.battery.removable ? "Yes" : "No"}</span>
+            ) : null
+          }
+          {
+            data.battery.charging.standard ? (
+              <span>charging standard: {data.battery.charging.standard}</span>
+            ) : null
+          }
+        </div>
+      </div>
+      <div class="flex flex-col">
+        <h3>Display:</h3>
+        <div class="flex flex-col ml-2">
+          {data.display.type ? <span>type: {data.display.type}</span> : null}
+          {
+            data.display.refresh_rate ? (
+              <span>refresh rate: {data.display.refresh_rate}Hz</span>
+            ) : null
+          }
+          {data.display.HDR ? <span>HDR: {data.display.HDR}</span> : null}
+          {data.display.nits ? <span>nits: {data.display.nits}</span> : null}
+          {
+            data.display.resolution ? (
+              <span>resolution: {data.display.resolution}</span>
+            ) : null
+          }
+          {
+            data.display.density ? (
+              <span>density: {data.display.density}</span>
+            ) : null
+          }
+        </div>
+      </div>
+      <div class="flex flex-col">
+        <h3>Sound:</h3>
+        <div class="flex flex-col ml-2">
+          {
+            data.sound.stereo != null ? (
+              <span>stereo: {data.sound.stereo ? "Yes" : "No"}</span>
+            ) : null
+          }
+          {
+            data.sound.speakers_count ? (
+              <span>speakers count: {data.sound.speakers_count}</span>
+            ) : null
+          }
+          {
+            data.sound.jack != null ? (
+              <span>jack: {data.sound.jack ? "Yes" : "No"}</span>
+            ) : null
+          }
+        </div>
+      </div>
+    </div>
   </div>
 </Layout>
