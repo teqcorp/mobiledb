@@ -2,17 +2,6 @@
 import { Icon } from "astro-icon/components";
 ---
 
-<script is:inline>
-  const theme = document.documentElement.getAttribute("data-theme");
-
-  document
-    .querySelector("[data-toggle-theme]")
-    .addEventListener("click", (e) => {
-      if (theme == "dark") {
-      }
-      console.log(theme);
-    });
-</script>
 <div class="p-4 sticky top-0">
   <div class="navbar bg-base-300 bg-opacity-95 rounded-xl">
     <div class="flex-1">
@@ -28,9 +17,9 @@ import { Icon } from "astro-icon/components";
       </div>
       <ul class="menu menu-horizontal px-1 gap-2">
         <li>
-          <button data-toggle-theme="dark,light"
-            ><Icon name="ic:baseline-dark-mode" /></button
-          >
+          <button data-toggle-theme="dark,light">
+            <Icon name="ic:baseline-dark-mode" />
+          </button>
         </li>
       </ul>
     </div>
