@@ -49,12 +49,12 @@ let isLoaded = false;
       ) : null
     }
     {
-      lastThreeDevices.map(([oem, device]) => {
+      lastThreeDevices.map(([oem, codenamee, model]) => {
         isLoaded = true;
         return (
-          <a class="card bg-base-200" href={`/${oem}/${device}`}>
+          <a class="card bg-base-200" href={`/${oem}/${codenamee}`}>
             <div class="card-body">
-              <span class="card-title">{device}</span>
+              <span class="card-title">{model}</span>
               <span>{oem}</span>
             </div>
           </a>
