@@ -6,13 +6,13 @@ import { parse } from "yaml";
 const url =
   "https://raw.githubusercontent.com/teqcorp/mobiledb_database/main/devices.yml";
 const response = await fetch(url);
-let devices = parse(await response.text());
+let data = parse(await response.text());
 
-let devicesArray = [];
+let devices = [];
 
-for (const oem in devices) {
-  for (const device in devices[oem]) {
-    devicesArray.push([oem, device, devices[oem][device]]);
+for (const oem in data) {
+  for (const device in data[oem]) {
+    devices.push([oem, device, data[oem][device]]);
   }
 }
 ---
@@ -27,14 +27,14 @@ for (const oem in devices) {
     />
     <div
       id="search-result"
-      class="flex hidden flex-col gap-2 absolute bg-base-300 top-20 w-[14.5rem] z-30"
+      class="flex hidden flex-col gap-2 absolute bg-base-300 top-20 w-[14.5rem]"
     >
       {
-        devicesArray.map(([oem, codename, device]) => {
+        devices.map(([oem, codename, device]) => {
           return (
             <a
-              class="px-4 py-2 hover:bg-base-100 transition-colors hover:cursor-pointer z-50"
-              href={`/${oem}/${codename}`}
+              class="px-4 py-2 hover:bg-base-100 transition-colors hover:cursor-pointer"
+              href={`/${oem.toLowerCase()}/${codename}`}
             >
               <span>
                 {oem} {device}
@@ -53,6 +53,8 @@ for (const oem in devices) {
     searchResult.style.display = "flex";
   });
   searchBar.addEventListener("focusout", (e) => {
-    searchResult.style.display = "none";
+    setTimeout(() => {
+      searchResult.style.display = "none";
+    }, 1000);
   });
 </script>

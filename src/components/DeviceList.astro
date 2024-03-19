@@ -1,33 +1,17 @@
 ---
-export const prerender = false;
-
 import { shuffle } from "@lib/utils.ts";
 import { parse } from "yaml";
 
 const url =
   "https://raw.githubusercontent.com/teqcorp/mobiledb_database/main/devices.yml";
 const response = await fetch(url);
-let devices = parse(await response.text());
+let data = parse(await response.text());
 
-let lastThreeDevices = [];
-let i = 0;
+let devices = [];
 
-let devicesArray = [];
-
-for (const oem in devices) {
-  for (const device in devices[oem]) {
-    devicesArray.push([oem, device, devices[oem][device]]);
-  }
-}
-
-const shuffledDevices = shuffle(devicesArray);
-
-for (const device in shuffledDevices) {
-  const [oem, codename, model] = shuffledDevices[device];
-  lastThreeDevices.push([oem, codename, model]);
-  i++;
-  if (i == 3) {
-    break;
+for (const oem in data) {
+  for (const device in data[oem]) {
+    devices.push([oem, device, data[oem][device]]);
   }
 }
 
@@ -49,17 +33,22 @@ let isLoaded = false;
       ) : null
     }
     {
-      lastThreeDevices.map(([oem, codenamee, model]) => {
-        isLoaded = true;
-        return (
-          <a class="card bg-base-200" href={`/${oem}/${codenamee}`}>
-            <div class="card-body">
-              <span class="card-title">{model}</span>
-              <span>{oem}</span>
-            </div>
-          </a>
-        );
-      })
+      shuffle(devices)
+        .slice(0, 3)
+        .map(([oem, codenamee, model]) => {
+          isLoaded = true;
+          return (
+            <a
+              class="card bg-base-200"
+              href={`/${oem.toLowerCase()}/${codenamee}`}
+            >
+              <div class="card-body">
+                <span class="card-title">{model}</span>
+                <span>{oem}</span>
+              </div>
+            </a>
+          );
+        })
     }
   </div>
 </div>
