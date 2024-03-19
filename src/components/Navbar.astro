@@ -1,5 +1,6 @@
 ---
 import { Icon } from "astro-icon/components";
+import Search from "@components/Search.astro";
 ---
 
 <div class="p-4 sticky top-0">
@@ -8,13 +9,7 @@ import { Icon } from "astro-icon/components";
       <a class="btn btn-ghost text-xl" href="/">MobileDB</a>
     </div>
     <div class="flex-none gap-2">
-      <div class="form-control">
-        <input
-          type="text"
-          placeholder="Search"
-          class="input input-bordered w-24 md:w-auto"
-        />
-      </div>
+      <Search />
       <ul class="menu menu-horizontal px-1 gap-2">
         <li>
           <button data-toggle-theme="dark,light">

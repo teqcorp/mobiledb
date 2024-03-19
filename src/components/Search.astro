@@ -1,0 +1,58 @@
+---
+export const prerender = false;
+
+import { parse } from "yaml";
+
+const url =
+  "https://raw.githubusercontent.com/teqcorp/mobiledb_database/main/devices.yml";
+const response = await fetch(url);
+let devices = parse(await response.text());
+
+let devicesArray = [];
+
+for (const oem in devices) {
+  for (const device in devices[oem]) {
+    devicesArray.push([oem, device, devices[oem][device]]);
+  }
+}
+---
+
+<div class="flex flex-col gap-4">
+  <div class="form-control">
+    <input
+      id="searchbar"
+      type="text"
+      placeholder="Search"
+      class="input input-bordered w-24 md:w-auto"
+    />
+    <div
+      id="search-result"
+      class="flex hidden flex-col gap-2 absolute bg-base-300 top-20 w-[14.5rem] z-30"
+    >
+      {
+        devicesArray.map(([oem, codename, device]) => {
+          return (
+            <a
+              class="px-4 py-2 hover:bg-base-100 transition-colors hover:cursor-pointer z-50"
+              href={`/${oem}/${codename}`}
+            >
+              <span>
+                {oem} {device}
+              </span>
+            </a>
+          );
+        })
+      }
+    </div>
+  </div>
+</div>
+<script>
+  const searchResult = document.querySelector("#search-result") as HTMLElement;
+  const searchBar = document.querySelector("#searchbar") as HTMLElement;
+  searchBar.addEventListener("focus", (e) => {
+    searchResult.style.display = "flex";
+  });
+  searchBar.addEventListener("focusout", (e) => {
+    searchResult.style.display = "none";
+  });
+</script>

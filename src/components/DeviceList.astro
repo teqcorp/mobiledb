@@ -1,23 +1,33 @@
 ---
 export const prerender = false;
 
+import { shuffle } from "@lib/utils.ts";
 import { parse } from "yaml";
 
 const url =
   "https://raw.githubusercontent.com/teqcorp/mobiledb_database/main/devices.yml";
 const response = await fetch(url);
-const devices = parse(await response.text());
+let devices = parse(await response.text());
 
 let lastThreeDevices = [];
 let i = 0;
 
+let devicesArray = [];
+
 for (const oem in devices) {
   for (const device in devices[oem]) {
-    lastThreeDevices.push([oem, devices[oem][device]]);
-    i++;
-    if (i == 3) {
-      break;
-    }
+    devicesArray.push([oem, device, devices[oem][device]]);
+  }
+}
+
+const shuffledDevices = shuffle(devicesArray);
+
+for (const device in shuffledDevices) {
+  const [oem, codename, model] = shuffledDevices[device];
+  lastThreeDevices.push([oem, codename, model]);
+  i++;
+  if (i == 3) {
+    break;
   }
 }
 
@@ -44,8 +54,8 @@ let isLoaded = false;
         return (
           <a class="card bg-base-200" href={`/${oem}/${device}`}>
             <div class="card-body">
-              <span class="card-title">{oem}</span>
-              <span>{device}</span>
+              <span class="card-title">{device}</span>
+              <span>{oem}</span>
             </div>
           </a>
         );
