@@ -6,7 +6,7 @@ import { parse } from "yaml";
 
 const { oem, codename } = Astro.params;
 
-const url = `https://github.com/teqcorp/mobiledb_database/raw/main/devices/${oem}/${codename}.yml`;
+const url = `https://github.com/teqcorp/mobiledb_database/raw/main/devices/${oem?.toLowerCase()}/${codename}.yml`;
 
 const response = await fetch(url);
 const data = parse(await response.text());
