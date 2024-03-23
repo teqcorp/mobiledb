@@ -3,13 +3,24 @@ export const prerender = false;
 
 import Layout from "@layouts/Layout.astro";
 import DeviceManufacturerList from "@components/DeviceManufacturerList.astro";
+import { getData } from "@lib/database";
+
+const data = await getData();
 
 const { oem } = Astro.params;
+
+let oemNice = oem;
+
+for (const dataOem in data) {
+  if (oem == dataOem.toLowerCase()) {
+    oemNice = dataOem;
+  }
+}
 ---
 
 <Layout title="Welcome to MobileDB!">
   <div class="flex flex-col gap-8">
-    <span class="text-2xl mt-2 ml-1">{oem} devices</span>
+    <span class="text-2xl mt-2 ml-1">{oemNice} devices</span>
     <DeviceManufacturerList oem={oem} />
   </div>
 </Layout>
