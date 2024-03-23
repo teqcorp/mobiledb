@@ -23,35 +23,73 @@ for (const oem in data) {
       class="input input-bordered w-24 md:w-auto"
     />
     <div
-      id="search-result"
-      class="flex hidden flex-col gap-2 absolute bg-base-300 top-20 w-[14.5rem]"
+      id="search-results"
+      class="hidden flex-col gap-2 absolute bg-base-300 top-20 w-[14.5rem]"
     >
-      {
-        devices.map(([oem, codename, device]) => {
-          return (
-            <a
-              class="px-4 py-2 hover:bg-base-100 transition-colors hover:cursor-pointer"
-              href={`/${oem.toLowerCase()}/${codename}`}
-            >
-              <span>
-                {oem} {device}
-              </span>
-            </a>
-          );
-        })
-      }
     </div>
   </div>
 </div>
 <script>
-  const searchResult = document.querySelector("#search-result") as HTMLElement;
+  import { getData } from "@lib/database";
+
+  const searchResults = document.querySelector(
+    "#search-results"
+  ) as HTMLElement;
   const searchBar = document.querySelector("#searchbar") as HTMLElement;
   searchBar.addEventListener("focus", (e) => {
-    searchResult.style.display = "flex";
+    searchResults.style.display = "flex";
   });
   searchBar.addEventListener("focusout", (e) => {
     setTimeout(() => {
-      searchResult.style.display = "none";
+      searchResults.style.display = "none";
     }, 100);
+  });
+
+  const data = await getData();
+
+  searchBar.addEventListener("keyup", (e) => {
+    if (e.target == null) return;
+
+    const target = e.target as HTMLTextAreaElement;
+
+    const query = target.value.toLowerCase();
+
+    console.log(`Searching for ${query}`);
+
+    searchResults.replaceChildren();
+
+    if (!query) return;
+
+    for (const oem in data) {
+      for (const device in data[oem]) {
+        let model = data[oem][device];
+        let searchPatterns = [oem.toLowerCase()]
+          .concat(model.toLowerCase().split(" "))
+          .concat(`${oem.toLowerCase()} ${device.toLowerCase()}`);
+
+        const searchPattern = searchPatterns.join(" ");
+
+        console.log(searchPattern);
+
+        if (searchPattern.includes(query)) {
+          const a = document.createElement("a");
+          a.href = `/${oem.toLowerCase()}/${device}`;
+          a.classList.add(
+            "px-4",
+            "py-2",
+            "hover:bg-base-100",
+            "transition-colors",
+            "hover:cursor-pointer"
+          );
+
+          const span = document.createElement("span");
+          span.textContent = `${oem} ${model}`;
+
+          a.appendChild(span);
+
+          searchResults.appendChild(a);
+        }
+      }
+    }
   });
 </script>
