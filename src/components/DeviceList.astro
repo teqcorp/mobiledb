@@ -35,12 +35,12 @@ let isLoaded = false;
     {
       shuffle(devices)
         .slice(0, 3)
-        .map(([oem, codenamee, model]) => {
+        .map(([oem, codename, model]) => {
           isLoaded = true;
           return (
             <a
               class="card bg-base-200"
-              href={`/${oem.toLowerCase()}/${codenamee}`}
+              href={`/${oem.toLowerCase()}/${codename}`}
             >
               <div class="card-body">
                 <span class="card-title">{model}</span>

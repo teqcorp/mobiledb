@@ -1,0 +1,15 @@
+---
+export const prerender = false;
+
+import Layout from "@layouts/Layout.astro";
+import DeviceManufacturerList from "@components/DeviceManufacturerList.astro";
+
+const { oem } = Astro.params;
+---
+
+<Layout title="Welcome to MobileDB!">
+  <div class="flex flex-col gap-8">
+    <span class="text-2xl mt-2 ml-1">{oem} devices</span>
+    <DeviceManufacturerList oem={oem} />
+  </div>
+</Layout>

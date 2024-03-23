@@ -1,0 +1,57 @@
+---
+import { parse } from "yaml";
+
+const { oem } = Astro.params;
+
+const url =
+  "https://raw.githubusercontent.com/teqcorp/mobiledb_database/main/devices.yml";
+const response = await fetch(url);
+let data = parse(await response.text());
+
+let devices = [];
+
+for (const dataOem in data) {
+  if (oem != dataOem.toLowerCase()) continue;
+
+  for (const device in data[dataOem]) {
+    devices.push([dataOem, device, data[dataOem][device]]);
+  }
+}
+
+devices.sort((a, b) => {
+  return a[2] - b[2];
+});
+
+let isLoaded = false;
+---
+
+<div class="flex flex-col gap-4">
+  <div class="grid grid-cols-1 gap-4 min-h-4 sm:grid-cols-4">
+    {
+      isLoaded ? (
+        <>
+          <div class="skeleton h-[92px]" />
+          <div class="skeleton" />
+          <div class="skeleton" />
+          <div class="skeleton" />
+        </>
+      ) : null
+    }
+    {
+      devices.map(([oem, codename, model]) => {
+        isLoaded = true;
+        return (
+          <a
+            class="card bg-base-200"
+            href={`/${oem.toLowerCase()}/${codename}`}
+          >
+            <div class="card-body flex-row items-center justify-between sm:flex-col sm:items-start">
+              <span class="card-title">{model}</span>
+              <span>{codename}</span>
+            </div>
+          </a>
+        );
+      })
+    }
+  </div>
+</div>
