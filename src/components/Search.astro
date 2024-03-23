@@ -1,12 +1,9 @@
 ---
 export const prerender = false;
 
-import { parse } from "yaml";
+import { getData } from "@lib/database";
 
-const url =
-  "https://raw.githubusercontent.com/teqcorp/mobiledb_database/main/devices.yml";
-const response = await fetch(url);
-let data = parse(await response.text());
+const data = await getData();
 
 let devices = [];
 

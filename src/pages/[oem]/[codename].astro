@@ -2,14 +2,11 @@
 export const prerender = false;
 
 import Layout from "@layouts/Layout.astro";
-import { parse } from "yaml";
+import { getDeviceData } from "@lib/database";
 
 const { oem, codename } = Astro.params;
 
-const url = `https://github.com/teqcorp/mobiledb_database/raw/main/devices/${oem}/${codename}.yml`;
-
-const response = await fetch(url);
-const data = parse(await response.text());
+const data = await getDeviceData(oem, codename);
 ---
 
 <Layout title=`MobileDB | ${data.manufacturer} ${data.name}`>
